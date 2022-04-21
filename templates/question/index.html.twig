@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Question index{% endblock %}
+
+{% block body %}
+    <h1>Question index</h1>
+
+    <div class="bd-example">
+    <table class="table table-hover">
+        <thead>
+            <tr class="table-info">
+                <th scope="col">Id</th>
+                <th scope="col">Header</th>
+                <th scope="col">Text</th>
+                <th scope="col">Category</th>
+                <th scope="col">Added</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for question in questions %}
+            <tr class="table-primary">
+                <td>{{ question.id }}</td>
+                <td>{{ question.header }}</td>
+                <td>{{ question.text }}</td>
+                <td>{{ question.category }}</td>
+                <td>{{ question.added ? question.added|date('Y-m-d') : '' }}</td>
+            </tr>
+        {% else %}
+            <tr class="table-danger">
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+{% endblock %}

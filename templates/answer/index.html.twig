@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Answer index{% endblock %}
+
+{% block body %}
+    <h1>Answer index</h1>
+    
+    <div class="bd-example">
+    <table class="table table-hover">
+        <thead>
+            <tr class="table-success">
+                <th scope="col">Id</th>
+                <th scope="col">Text</th>
+                <th scope="col">Added</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for answer in answers %}
+            <tr class="table-primary">
+                <td>{{ answer.id }}</td>
+                <td>{{ answer.text }}</td>
+                <td>{{ answer.added ? answer.added|date('Y-m-d') : '' }}</td>
+            </tr>
+        {% else %}
+            <tr class="table-danger">
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+{% endblock %}

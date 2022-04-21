@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+    <h1>User index</h1>
+
+<div class="bd-example">
+    <table class="table table-hover">
+        <thead>
+            <tr class="table-primary">
+                <th>Id</th>
+                <th>Name</th>
+                <th>Hash</th>
+                <th>Email</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr class="table-info">
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.hash }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phone }}</td>
+            </tr>
+        {% else %}
+            <tr class="table-danger">
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
