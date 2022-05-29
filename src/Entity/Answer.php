@@ -23,9 +23,12 @@ class Answer
     #[ORM\JoinColumn(nullable: true)]
     private $author;
 
-    #[ORM\ManyToOne(targetEntity: Question::class)]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\ManyToOne(targetEntity: Question::class, inversedBy: 'answers')]
+    #[ORM\JoinColumn(nullable: false)]
     private $question;
+
+    #[ORM\Column(type: 'boolean')]
+    private $active;
 
     public function getId(): ?int
     {
@@ -76,6 +79,18 @@ class Answer
     public function setQuestion(?Question $question): self
     {
         $this->question = $question;
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
 
         return $this;
     }
