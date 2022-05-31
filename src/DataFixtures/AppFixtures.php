@@ -28,6 +28,7 @@ class AppFixtures extends Fixture
         $user->setEmail('admin@example.com');
         $user->setPhone(mt_rand(80000000000, 89999999999));
         $user->setRoles(['ROLE_ADMIN']);
+        $user->setApiToken('admin_api_token');
         $user->setPassword(
             $this->passwordHasher->hashPassword(
                 $user,
@@ -44,6 +45,7 @@ class AppFixtures extends Fixture
             $user->setEmail('user' . $i . '@example.com');
             $user->setPhone(mt_rand(80000000000, 89999999999));
             $user->setRoles(['ROLE_USER']);
+            $user->setApiToken('user' . $i . '_api_token');
             $user->setPassword(
                 $this->passwordHasher->hashPassword(
                     $user,

@@ -2,29 +2,50 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\QuestionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
+#[ApiResource(
+    collectionOperations: [
+        'get' => [
+            'normalization_context' => ['groups' => ['getCollection']],
+        ],
+    ],
+    itemOperations: [
+        'get' => [
+            'normalization_context' => ['groups' => ['getById']],
+        ],
+    ],
+//    attributes: ["security" => "is_granted('ROLE_USER')"],
+    normalizationContext: ['groups' => ['getCollection', 'getById']],
+)]
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
 class Question
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['getById', 'getCollection'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['getById', 'getCollection'])]
     private $header;
 
     #[ORM\Column(type: 'string', length: 1024, nullable: true)]
+    #[Groups(['getById'])]
     private $text;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['getById', 'getCollection'])]
     private $category;
 
     #[ORM\Column(type: 'date')]
+    #[Groups(['getById'])]
     private $added;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
@@ -32,9 +53,11 @@ class Question
     private $author;
 
     #[ORM\OneToMany(mappedBy: 'question', targetEntity: Answer::class, orphanRemoval: true)]
+    #[Groups(['getById'])]
     private $answers;
 
     #[ORM\Column(type: 'boolean')]
+    #[Groups(['getById', 'getCollection'])]
     private $active;
 
     public function __construct()

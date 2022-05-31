@@ -2,21 +2,40 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AnswerRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
+#[ApiResource(
+    collectionOperations: [
+        'get' => [
+            'normalization_context' => ['groups' => ['getCollection']],
+        ],
+    ],
+    itemOperations: [
+        'get' => [
+            'normalization_context' => ['groups' => ['getById']],
+        ],
+    ],
+//    attributes: ["security" => "is_granted('ROLE_USER')"],
+    normalizationContext: ['groups' => ['getCollection', 'getById']],
+)]
 #[ORM\Entity(repositoryClass: AnswerRepository::class)]
 class Answer
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['getById', 'getCollection'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 1024)]
+    #[Groups(['getById'])]
     private $text;
 
     #[ORM\Column(type: 'date')]
+    #[Groups(['getById'])]
     private $added;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
@@ -28,6 +47,7 @@ class Answer
     private $question;
 
     #[ORM\Column(type: 'boolean')]
+    #[Groups(['getById', 'getCollection'])]
     private $active;
 
     public function getId(): ?int

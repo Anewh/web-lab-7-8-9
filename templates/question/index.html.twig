@@ -1,29 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Question index{% endblock %}
+{% block title %}Last questions{% endblock %}
 
 {% block body %}
-    <h1>Question index</h1>
-
+    <h1>Last questions</h1>
+    <a href="{{ path('app_question_new') }}" >Задать вопрос</a>
     <div class="bd-example">
     <table class="table table-hover">
         <thead>
-            <tr class="table-info">
-                <th scope="col">Id</th>
+            <tr class="table-light">
                 <th scope="col">Header</th>
-                <th scope="col">Text</th>
-                <th scope="col">Category</th>
-                <th scope="col">Added</th>
+                <th scope="col">Added date</th>
+                <th scope="col">Answers</th>
             </tr>
         </thead>
         <tbody>
         {% for question in questions %}
-            <tr class="table-primary">
-                <td>{{ question.id }}</td>
-                <td>{{ question.header }}</td>
-                <td>{{ question.text }}</td>
-                <td>{{ question.category }}</td>
+            <tr>
+                <td><a href="{{ path('app_question_show', {'id': question.id}) }}">{{ question.header }}</a></td>
                 <td>{{ question.added ? question.added|date('Y-m-d') : '' }}</td>
+                <td>{{ question.answers.count }}</td>
             </tr>
         {% else %}
             <tr class="table-danger">

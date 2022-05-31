@@ -3,36 +3,48 @@
 {% block title %}Question{% endblock %}
 
 {% block body %}
-    <h1>Question</h1>
+    <div class="border p-3">
+        <table class="table table-borderless">
+            <tbody>
+            <tr class="border">
+                <td>
+                    <h4>{{ question.header }}</h4>
+                    <p class="text-black-50"> by {{ question.author.name }}</p>
+                </td>
+            </tr>
+            <tr class="border">
+                <td><p>{{ question.text }}</p></td>
+            </tr>
+            <tr>
+                <td class="text-black-50">#{{ question.category }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="d-inline-flex align-items-center mt-3">
+        <a href="{{ path('app_question_index') }}" class="btn btn-outline-dark">
+            Back to questions list</a>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('app_question_edit', {'id': question.id}) }}" class="btn btn-outline-danger ms-2">
+                Edit</a>
+            <span class="ms-2">
+                {{ include('question/_delete_form.html.twig') }}
+            </span>
+        {% endif %}
+    </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ question.id }}</td>
-            </tr>
-            <tr>
-                <th>Header</th>
-                <td>{{ question.header }}</td>
-            </tr>
-            <tr>
-                <th>Text</th>
-                <td>{{ question.text }}</td>
-            </tr>
-            <tr>
-                <th>Category</th>
-                <td>{{ question.category }}</td>
-            </tr>
-            <tr>
-                <th>Added</th>
-                <td>{{ question.added ? question.added|date('Y-m-d') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_question_index') }}">back to list</a>
-
-    <a href="{{ path('app_question_edit', {'id': question.id}) }}">edit</a>
-
-    {{ include('question/_delete_form.html.twig') }}
+    <div class="mt-3 mb-4">
+        {% if app.user %}
+            {{ render(controller(
+                'App\\Controller\\AnswerController::new',
+                {},
+                {'question-id': question.id}
+            )) }}
+        {% endif %}
+    </div>
+    {{ render(controller(
+        'App\\Controller\\AnswerController::index',
+        {},
+        {'question-id': question.id}
+    )) }}
 {% endblock %}
